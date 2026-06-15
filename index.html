@@ -84,6 +84,11 @@
   .sched.running{box-shadow:0 0 0 2px rgba(11,122,59,.4);}
   .sched.paused{background:#fffbf0;}
   .sched.done{background:#f7f9fb;opacity:.7;}
+  /* 短いタスクでもボタンを押せるよう、ホバー/タップで展開して最前面に */
+  .sched:hover,.sched.expanded{height:auto!important;min-height:60px;overflow:visible;z-index:30;
+    box-shadow:0 4px 16px rgba(0,0,0,.22);}
+  .sched.short .s-sub{display:none;}
+  .sched.short:hover .s-sub,.sched.short.expanded .s-sub{display:block;}
   .sched .s-title{font-weight:700;font-size:12px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .sched.done .s-title{text-decoration:line-through;}
   .sched .s-sub{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -376,14 +381,16 @@ function schedCard(t,lanes){
     : (t.status==='running'
         ? `<button class="pa" onclick="pause(${t.id})">中断</button><button class="fin" onclick="finish(${t.id})">完了</button>`
         : `<button class="go" onclick="start(${t.id})">${t.status==='paused'?'再開':'開始'}</button><button class="fin" onclick="finish(${t.id})">完了</button>`);
-  const compact=h<54;
+  if(h<54) d.classList.add('short');
   d.innerHTML=`
     <div class="s-title">${esc(t.title)}</div>
-    ${compact?'':`<div class="s-sub">${esc(t.acct)}・${esc(t.work)}</div>`}
+    <div class="s-sub">${esc(t.acct)}・${esc(t.work)}</div>
     <div><span class="s-status st-${t.status}">${stLabel}</span>
       <span class="s-time">${fmtHour(t.start)}〜${fmtHour(t.start+t.estPlan)}・予${t.estPlan}h<span id="act-${t.id}">${actualSuffix(t)}</span></span></div>
     <div class="s-act">${act}<button onclick="dup(${t.id})">複製</button><button onclick="unassign(${t.id})">戻す</button></div>`;
   d.addEventListener('dragstart',e=>{e.dataTransfer.setData('id',t.id);});
+  // タップで展開（スマホ等ホバーできない環境でボタンに触れられるように）
+  d.addEventListener('click',e=>{if(e.target.closest('button'))return;d.classList.toggle('expanded');});
   return d;
 }
 function actualSuffix(t){const m=liveMin(t);return m>0?`／実${(m/60).toFixed(2)}h`:'';}
