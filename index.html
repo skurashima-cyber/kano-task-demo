@@ -251,7 +251,7 @@ function mk(title,acct,work,type,pri,est,date,start){
 }
 
 // ===== 初期化 =====
-(function init(){
+function init(){
   const accts=[...new Set(tasks.map(t=>t.acct))].sort();
   const fa=document.getElementById('fAcct'), dl=document.getElementById('acctList');
   accts.forEach(a=>{
@@ -260,7 +260,7 @@ function mk(title,acct,work,type,pri,est,date,start){
   });
   renderDate(); render();
   setInterval(tick,1000);   // 実行中タスクの実績を毎秒更新
-})();
+}
 
 // ===== 日付 =====
 const WD=["日","月","火","水","木","金","土"];
@@ -438,6 +438,9 @@ function addTask(){
   tasks.push(t);closeNew();render();
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+// すべての宣言の後に初期化を実行（const のTDZエラー回避）
+init();
 </script>
 </body>
 </html>

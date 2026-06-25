@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>タスク管理画面 操作マニュアル｜加納経営事務所</title>
+<style>
+  :root{ --blue:#0b5cab; --ink:#16325c; --muted:#5e6c84; --line:#e3e8ef; --bg:#f7f9fc; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic UI","Segoe UI",sans-serif;line-height:1.8;}
+  .top{background:var(--blue);color:#fff;padding:18px 24px;}
+  .top .b{font-weight:700;font-size:18px;}
+  .top .s{opacity:.85;font-size:13px;margin-top:2px;}
+  main{max-width:940px;margin:0 auto;padding:28px 22px 80px;}
+  h1{font-size:24px;border-bottom:3px solid var(--blue);padding-bottom:10px;margin-top:8px;}
+  h2{font-size:20px;margin-top:40px;border-left:5px solid var(--blue);padding-left:10px;}
+  h3{font-size:16px;margin-top:28px;color:#0b3a6b;}
+  p,li{font-size:14.5px;}
+  code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:13px;}
+  pre{background:#0d2440;color:#e6edf6;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:12.5px;line-height:1.5;}
+  pre code{background:none;color:inherit;padding:0;}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top;}
+  th{background:#eef4fb;}
+  tr:nth-child(even) td{background:#fafcfe;}
+  img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;
+    box-shadow:0 2px 10px rgba(11,92,171,.10);margin:10px 0;display:block;}
+  blockquote{border-left:4px solid #9cc4ee;background:#eef4fb;margin:14px 0;padding:8px 14px;border-radius:0 6px 6px 0;color:#26456e;}
+  hr{border:none;border-top:1px solid var(--line);margin:30px 0;}
+  a{color:var(--blue);}
+  em{color:var(--muted);font-style:normal;font-size:12.5px;}
+  .toc-note{background:#fff8e6;border:1px solid #f0e3b8;border-radius:8px;padding:10px 14px;font-size:13px;}
+  @media print{ .top{position:static;} a{color:var(--ink);text-decoration:none;} }
+</style>
+</head>
+<body>
+<div class="top"><div class="b">加納経営事務所様</div><div class="s">Salesforce タスク管理画面 — 操作マニュアル</div></div>
+<main>
+<h1>タスク管理画面（日次スケジュール）操作マニュアル【詳細版】</h1>
+<p><strong>加納経営事務所様 ｜ Salesforce タスク管理機能</strong>
+最終更新: 2026-06 ／ 対象環境: 検証用サンドボックス（glue-kano-sbx）</p>
+<hr>
+<blockquote>
+<p><strong>この機能のねらい</strong>
+大量のタスクから「今日やること」を選び、ドラッグ＆ドロップで1日の時間割を組み、
+「開始 → 中断 → 完了」のボタン操作だけで<strong>実際にかかった時間（実績）を自動で記録</strong>します。
+終わらなかったタスクは翌日へ自動で繰り越します。</p>
+</blockquote>
+<hr>
+<h2>目次</h2>
+<ol>
+<li>はじめに（できること）</li>
+<li>用語の定義</li>
+<li>画面を開く</li>
+<li>画面全体の構成</li>
+<li>1日の使い方（実践フロー）</li>
+<li>操作リファレンス（手順詳細）</li>
+<li>標準タスク画面での確認・編集</li>
+<li>項目リファレンス</li>
+<li>色・バッジ・アイコン一覧</li>
+<li>権限と表示範囲</li>
+<li>よくある質問（FAQ）</li>
+<li>トラブルシューティング</li>
+<li>制約・既知の仕様</li>
+<li>問い合わせ</li>
+</ol>
+<hr>
+<h2>1. はじめに（この機能でできること）</h2>
+<table>
+<thead>
+<tr>
+<th>やりたいこと</th>
+<th>この画面でできること</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>今日やることを決める</td>
+<td>未処理タスクの一覧から、今日やるものを時間割へ割り当て</td>
+</tr>
+<tr>
+<td>時間割を組む</td>
+<td>ドラッグ＆ドロップ（または時刻選択）で開始時刻を指定。所要時間の長さで表示</td>
+</tr>
+<tr>
+<td>作業時間を測る</td>
+<td>開始/中断/完了ボタンで実績時間を自動集計</td>
+</tr>
+<tr>
+<td>急な依頼に対応</td>
+<td>その場で新規タスクを登録</td>
+</tr>
+<tr>
+<td>午前/午後に分ける</td>
+<td>タスクを複製して別々の時間帯へ配置</td>
+</tr>
+<tr>
+<td>やり残しを繰り越す</td>
+<td>中断したタスクが翌日のリストに自動表示</td>
+</tr>
+<tr>
+<td>1日の負荷を把握</td>
+<td>予定合計・実績合計・勤務想定8hに対する残/超過を自動計算</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. 用語の定義（先に押さえると理解が早いです）</h2>
+<table>
+<thead>
+<tr>
+<th>用語</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>タスク</strong></td>
+<td>やるべき仕事1件。Salesforceの「ToDo（Task）」と同じものです</td>
+</tr>
+<tr>
+<td><strong>タスクリスト（左）</strong></td>
+<td>まだ時間割に入れていない、自分のタスク置き場</td>
+</tr>
+<tr>
+<td><strong>日次スケジュール（右）</strong></td>
+<td>その日の時間割（8:00〜19:00の縦の時間軸）</td>
+</tr>
+<tr>
+<td><strong>割当</strong></td>
+<td>タスクを時間割の特定の時間帯に置くこと</td>
+</tr>
+<tr>
+<td><strong>未割当</strong></td>
+<td>まだ時間割に入っていない状態（左リストにある）</td>
+</tr>
+<tr>
+<td><strong>予定時間</strong></td>
+<td>そのタスクにかかる見込み時間（手入力・0.25時間単位）</td>
+</tr>
+<tr>
+<td><strong>実績</strong></td>
+<td>実際にかかった時間（開始/中断/完了から自動計算）</td>
+</tr>
+<tr>
+<td><strong>実行状況</strong></td>
+<td>作業の進み具合（未着手／実行中／中断中／完了）</td>
+</tr>
+<tr>
+<td><strong>種別</strong></td>
+<td>タスクの場所区分（外出／社内／会議）</td>
+</tr>
+<tr>
+<td><strong>作業種別</strong></td>
+<td>業務内容の区分（記帳／申告／相談／打合せ 等）</td>
+</tr>
+<tr>
+<td><strong>繰越</strong></td>
+<td>中断のまま終わらなかったタスクを翌日のリストに出すこと</td>
+</tr>
+<tr>
+<td><strong>顧問先</strong></td>
+<td>タスクに紐づく取引先（お客様）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3. 画面を開く</h2>
+<h3>3-1. 手順</h3>
+<ol>
+<li>ブラウザで Salesforce にログインします。</li>
+<li>画面<strong>左上の点が9つ並んだアイコン</strong>（アプリランチャー）をクリックします。</li>
+<li>上部の検索欄に「<strong>加納タスク管理</strong>」と入力します。</li>
+<li>表示された「<strong>加納タスク管理</strong>」をクリックします。</li>
+<li>「<strong>タスク管理</strong>」タブが開きます。</li>
+</ol>
+<blockquote>
+<p><strong>直接URL</strong>で開く場合: <code>/lightning/n/Task_Scheduler</code>（お使いのSalesforceのドメインに続けて入力）</p>
+</blockquote>
+<h3>3-2. スマートフォンで開く場合</h3>
+<ul>
+<li>スマホの**ブラウザ（Safari / Chrome）**で同じURLを開きます。</li>
+<li>スマホでは画面が<strong>縦並び</strong>（上：タスクリスト／下：スケジュール）になります。</li>
+<li>スマホでは<strong>細かいドラッグが難しい</strong>ため、タスクカードの「<strong>時刻</strong>」欄から時間を選んで割り当ててください（後述 6-2）。</li>
+</ul>
+<h3>3-3. 開けない・表示されないとき</h3>
+<ul>
+<li>「ログインできない」場合 → <strong>検証用（サンドボックス）環境</strong>にログインしているか確認してください（本番環境ではありません）。</li>
+<li>エラーが出る場合 → <strong>スクリーンショットをチャットワークへ</strong>お送りください。</li>
+</ul>
+<hr>
+<h2>4. 画面全体の構成</h2>
+<p><strong>▼ 実際の画面（全体イメージ）</strong></p>
+<p><img src="manual-images/01-overview.png" alt="タスク管理画面 全体"></p>
+<p>下図は各エリアの対応を示した模式図です。</p>
+<pre><code>┌──────────────────────────────────────────────────────────┐
+│ 今日のタスク割当   ‹  2026/6/3（水）  ›   ＋新規タスク  未割当6 本日3 │  ← ① ツールバー
+├───────────────────────────┬──────────────────────────────┤
+│ 📋 タスクリスト  6        │ 🗓 日次スケジュール  3              │  ← ②見出し（件数）
+│ ┌─[種別▾][顧問先▾][優先度▾][並▾][🔍検索]─┐│   8:00                          │  ← ③フィルタ ／ ④時間軸
+│ │ ■ 5月度 月次試算表チェック        ││   9:00 ┌ 月次チェック  実行中 ┐    │
+│ │   🏢 山田商事  [社内][記帳][優先:高] ││        └ 9:00〜10:30 予1.5h ┘    │  ← ⑤スケジュールカード
+│ │   予定[1.5]h  [時刻▾]  [複製]    ││  10:00                          │
+│ │ ■ 請求書データ記帳 …            ││  11:00 ┌ 電話 …          ┐      │
+│ └────────────────────────┘│  13:00 ┌ 訪問 …          ┐      │
+│                           │   …                            │
+├───────────────────────────┴──────────────────────────────┤
+│ 割当 3 ｜ 予定合計 4.00h ｜ 実績合計 1.20h ｜ 完了 1 ｜ 残 4.00h（8h想定）  │  ← ⑥ 集計バー
+└──────────────────────────────────────────────────────────┘
+※ 仕様合意用 → 実データ連携。自分が所有する未完了タスクを日次で割当できます。            ← ⑦ 注記
+</code></pre>
+<h3>各エリアの説明</h3>
+<p><strong>① ツールバー（上部）</strong></p>
+<p><img src="manual-images/02-toolbar.png" alt="ツールバー"></p>
+<ul>
+<li><strong>‹ 日付 ›</strong> … 表示する日を前後に切り替え（中央に表示中の日付と曜日）</li>
+<li><strong>＋新規タスク</strong> … その場で新しいタスクを追加</li>
+<li><strong>未割当 N</strong> … 今、時間割に入っていない自分の未完了タスクの件数</li>
+<li><strong>本日 N</strong> … 表示中の日に割り当て済みのタスク件数</li>
+</ul>
+<p><strong>② 見出し</strong> … 各列のタイトルと件数バッジ</p>
+<p><strong>③ フィルタ（左列の上）</strong> … 種別／顧問先／優先度／並べ替え／件名検索（詳細 6-9）</p>
+<p><strong>④ 時間軸（右列）</strong> … 8:00〜19:00。1時間ごとに目盛り線、15分ごとに薄い線</p>
+<p><strong>⑤ スケジュールカード（右列）</strong> … 割り当て済みタスク。<strong>高さ＝予定時間</strong>に比例</p>
+<p><strong>⑥ 集計バー（下部）</strong> … その日の合計値（詳細 6-10）</p>
+<p><strong>⑦ 注記</strong> … この画面の位置づけ</p>
+<hr>
+<h2>5. 1日の使い方（実践フロー）</h2>
+<p>実際の流れに沿った使い方の例です。</p>
+<h3>朝（その日の段取り）</h3>
+<ol>
+<li>画面を開き、日付が<strong>今日</strong>になっていることを確認します。</li>
+<li>左の<strong>タスクリスト</strong>を見て、今日やるタスクを選びます。<ul>
+<li>必要に応じて<strong>顧問先</strong>や<strong>種別</strong>で絞り込み、<strong>優先度</strong>順に並べ替えます（6-9）。</li>
+</ul>
+</li>
+<li>上から順に、右の<strong>スケジュール</strong>へドラッグして時間割を組みます（6-2）。</li>
+<li>下の<strong>集計バー</strong>で「予定合計」を確認。<strong>8hを超えていないか</strong>（残/超過）をチェックします。<ul>
+<li>多すぎる場合は、優先度の低いタスクを翌日に回す（割り当てない）等で調整します。</li>
+</ul>
+</li>
+</ol>
+<h3>日中（作業しながら）</h3>
+<ol start="5">
+<li>取りかかるタスクの「<strong>開始</strong>」を押します（状況＝実行中）。</li>
+<li>別件で中断するときは「<strong>中断</strong>」（それまでの時間が実績に加算）。</li>
+<li>終わったら「<strong>完了</strong>」（取り消し線になり、完了数に加算）。</li>
+<li>急な依頼が来たら「<strong>＋新規タスク</strong>」で登録し、空き時間へ割当（6-6）。</li>
+<li>同じ仕事を午前・午後に分けるときは「<strong>複製</strong>」して2つを別の時間に配置（6-7）。</li>
+</ol>
+<h3>夕方（締め）</h3>
+<ol start="10">
+<li>「実績合計」で今日の実働時間を確認します。</li>
+<li>終わらなかったタスクは「<strong>中断</strong>」のままにしておくと、<strong>翌日のリストに自動で繰り越し</strong>されます（6-5）。</li>
+</ol>
+<hr>
+<h2>6. 操作リファレンス（手順詳細）</h2>
+<h3>6-1. 日付を切り替える</h3>
+<ul>
+<li>ツールバーの <strong>‹</strong>（前日）／ <strong>›</strong>（翌日）をクリックします。</li>
+<li>中央に「<strong>2026/6/3（水）</strong>」のように表示中の日付と曜日が出ます。</li>
+<li>切り替えると、左右の表示がその日の内容に更新されます。</li>
+</ul>
+<h3>6-2. タスクを時間割に入れる（割当）</h3>
+<p>下が「ドラッグするタスクカード」、右が割当先の「日次スケジュール」です。</p>
+<p><img src="manual-images/04-tasklist-card.png" alt="タスクカード（左リスト）"></p>
+<p><img src="manual-images/06-schedule.png" alt="日次スケジュール（右）"></p>
+<p><strong>方法A：ドラッグ＆ドロップ（PC推奨）</strong></p>
+<ol>
+<li>左のタスクカードを<strong>マウスでつかみます</strong>（カーソルが手の形に）。</li>
+<li>右のスケジュールの<strong>入れたい時間帯までドラッグ</strong>します。</li>
+<li>指を離すと、その**時刻（15分単位に自動スナップ）**に配置されます。<ul>
+<li>例：9:07 付近で離すと 9:00 または 9:15 に吸着します。</li>
+</ul>
+</li>
+</ol>
+<p><strong>方法B：時刻を選んで割当（スマホ・簡単操作）</strong></p>
+<ol>
+<li>タスクカードの「<strong>時刻…</strong>」のプルダウンを開きます。</li>
+<li>開始時刻（8:00〜18:45、15分刻み）を選びます。</li>
+<li>選んだ時刻に配置されます。</li>
+</ol>
+<blockquote>
+<p>配置後、カードは<strong>予定時間の長さに比例した高さ</strong>で表示されます（0.5h は短く、2.0h は長く）。
+同じ時間帯に複数が重なる場合は、<strong>横に並べて</strong>表示されます。</p>
+</blockquote>
+<h3>6-3. 予定時間を変える</h3>
+<ol>
+<li>左のタスクカードの「<strong>予定 ◯ h</strong>」の数字欄をクリックします。</li>
+<li>数値を入力（または上下ボタン）して変更します。<strong>0.25（15分）単位</strong>です。</li>
+<li>変更すると、スケジュール上の高さと、集計バーの「予定合計」に即反映されます。</li>
+</ol>
+<blockquote>
+<p>※ 予定時間の変更は<strong>左のタスクカード</strong>で行います。</p>
+</blockquote>
+<h3>6-4. 開始 / 中断 / 完了（実績の自動記録）</h3>
+<p>スケジュール上のタスクカードのボタンで操作します。状態によって出るボタンが変わります。</p>
+<p><img src="manual-images/08-schedule-running.png" alt="実行中のタスク（緑＝実行中。中断/完了ボタン）">
+<em>上：「実行中」のタスク（緑バッジ＋中断/完了ボタン）。下：「未着手」のタスク（開始/完了ボタン）。</em></p>
+<p><strong>状態の移り変わり：</strong></p>
+<pre><code> ┌─────────┐  開始   ┌─────────┐  中断   ┌─────────┐
+ │ 未着手   │ ────▶ │ 実行中   │ ────▶ │ 中断中   │
+ └─────────┘        └─────────┘        └─────────┘
+                       │ 完了            │ 再開（→実行中）
+                       ▼                 │ 完了（→完了）
+                    ┌─────────┐ ◀────────┘
+                    │  完了    │  取消（→中断中）
+                    └─────────┘
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>今の状況</th>
+<th>表示されるボタン</th>
+<th>押すと</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未着手</td>
+<td><strong>開始</strong> ／ 完了</td>
+<td>開始＝計測スタート（実行中へ）</td>
+</tr>
+<tr>
+<td>実行中</td>
+<td><strong>中断</strong> ／ 完了</td>
+<td>中断＝経過を実績へ加算（中断中へ）／完了＝締める</td>
+</tr>
+<tr>
+<td>中断中</td>
+<td><strong>再開</strong> ／ 完了</td>
+<td>再開＝計測再スタート／完了＝締める</td>
+</tr>
+<tr>
+<td>完了</td>
+<td><strong>取消</strong></td>
+<td>完了を取り消し（中断中へ戻す）</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>実績の数え方</strong>：開始した時刻から中断（または完了）までの経過が、分単位で積み上がります。中断→再開を繰り返しても合算されます。</li>
+<li>実行中のタスクは、カードに「<strong>実◯h</strong>」が<strong>毎秒更新</strong>で表示されます。</li>
+<li>完了したタスクは<strong>取り消し線</strong>＋薄い表示になり、集計バーの「完了」が＋1されます。</li>
+</ul>
+<h3>6-5. 中断したタスクの翌日繰越</h3>
+<ul>
+<li><strong>中断中</strong>のまま<strong>完了していない</strong>タスクは、<strong>翌日以降のタスクリスト</strong>に「<strong>前日から中断</strong>」バッジ付きで表示されます。</li>
+<li>翌日、そのタスクをまたスケジュールへ入れて続きの作業ができます。</li>
+<li>完了したタスクは繰り越されません。</li>
+</ul>
+<h3>6-6. 新規タスクを追加する</h3>
+<p><img src="manual-images/07-modal-new.png" alt="新規タスクの入力欄"></p>
+<ol>
+<li><p>ツールバーの「<strong>＋新規タスク</strong>」をクリックします。</p>
+</li>
+<li><p>入力欄が出ます。各項目を入力します。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+<th>初期値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>件名</td>
+<td>タスク名（<strong>必須</strong>）</td>
+<td>空</td>
+</tr>
+<tr>
+<td>顧問先</td>
+<td>プルダウンから取引先を選択（未設定も可）</td>
+<td>（未設定）</td>
+</tr>
+<tr>
+<td>種別</td>
+<td>社内／外出／会議</td>
+<td>社内</td>
+</tr>
+<tr>
+<td>作業種別</td>
+<td>業務区分を入力（記帳 等）</td>
+<td>記帳</td>
+</tr>
+<tr>
+<td>優先度</td>
+<td>高／中／低</td>
+<td>中</td>
+</tr>
+<tr>
+<td>予定時間(h)</td>
+<td>見込み時間（0.25単位）</td>
+<td>1.0</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>「<strong>追加</strong>」を押すと、左のタスクリストに未割当で追加されます。</p>
+</li>
+<li><p>やめる場合は「<strong>キャンセル</strong>」。</p>
+</li>
+</ol>
+<blockquote>
+<p>件名が空のままだと「件名を入力してください」と表示され、追加できません。</p>
+</blockquote>
+<h3>6-7. タスクを複製する</h3>
+<ol>
+<li>タスクカードの「<strong>複製</strong>」ボタンを押します。</li>
+<li>件名の末尾に「<strong>（複製）</strong>」が付いたコピーが、<strong>未割当</strong>でタスクリストに作られます。<ul>
+<li>種別・作業種別・顧問先・優先度・予定時間は引き継がれます。</li>
+<li>実績は0、実行状況は未着手にリセットされます。</li>
+</ul>
+</li>
+<li>元と複製を、それぞれ別の時間帯（午前／午後など）へ割り当てます。</li>
+</ol>
+<h3>6-8. 時間割から外す（割当解除）</h3>
+<ul>
+<li>スケジュール上のカードの「<strong>戻す</strong>」を押します（またはPCで左リストへドラッグ）。</li>
+<li>そのタスクは未割当に戻り、左のタスクリストに表示されます。</li>
+</ul>
+<h3>6-9. 絞り込み・並べ替え（左列のフィルタ）</h3>
+<p><img src="manual-images/03-filters.png" alt="フィルタ（種別／顧問先／優先度／並べ替え／検索）"></p>
+<table>
+<thead>
+<tr>
+<th>フィルタ</th>
+<th>動作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>種別</strong></td>
+<td>外出／社内／会議で絞り込み（「種別（すべて）」で解除）</td>
+</tr>
+<tr>
+<td><strong>顧問先</strong></td>
+<td>表示中タスクに含まれる顧問先で絞り込み</td>
+</tr>
+<tr>
+<td><strong>優先度</strong></td>
+<td>高／中／低で絞り込み</td>
+</tr>
+<tr>
+<td><strong>🔍 検索</strong></td>
+<td>件名に入力文字を含むタスクだけ表示</td>
+</tr>
+<tr>
+<td><strong>並べ替え</strong></td>
+<td>優先度 ／ 予定時間（長い順） ／ 種別 ／ 顧問先</td>
+</tr>
+</tbody></table>
+<ul>
+<li>複数のフィルタは<strong>同時に効きます</strong>（例：顧問先＝山田商事 かつ 種別＝社内）。</li>
+<li>フィルタは<strong>左のタスクリスト</strong>に対して働きます（右のスケジュールは当日分を常に表示）。</li>
+</ul>
+<h3>6-10. 集計バーの読み方（下部）</h3>
+<p><img src="manual-images/05-summary.png" alt="集計バー"></p>
+<table>
+<thead>
+<tr>
+<th>表示</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>割当</strong></td>
+<td>その日に割り当てたタスク件数</td>
+</tr>
+<tr>
+<td><strong>予定合計</strong></td>
+<td>割当タスクの予定時間の合計。8hを超えると赤色</td>
+</tr>
+<tr>
+<td><strong>実績合計</strong></td>
+<td>実際にかかった時間の合計（緑色）</td>
+</tr>
+<tr>
+<td><strong>完了</strong></td>
+<td>完了したタスク件数</td>
+</tr>
+<tr>
+<td><strong>残 / 超過</strong></td>
+<td>勤務想定8hに対する残り時間。超えると「超過 ◯h」（赤）</td>
+</tr>
+</tbody></table>
+<h3>6-11. 短いタスクのボタンが押しにくいとき</h3>
+<p><img src="manual-images/09-short-expanded.png" alt="短いタスクにカーソルを乗せると広がる"></p>
+<ul>
+<li>予定時間が短いタスクはカードが小さく表示されます。</li>
+<li><strong>マウスを乗せる（スマホはタップ）と、カードが広がって最前面に出ます</strong>。</li>
+<li>広がった状態で「開始／中断／完了／複製／戻す」を押せます。</li>
+</ul>
+<hr>
+<h2>7. 標準タスク画面での確認・編集</h2>
+<p>この機能の項目は、<strong>通常のタスク（ToDo）詳細画面</strong>にも「<strong>タスク管理（日次スケジュール）</strong>」というセクションで表示され、確認・編集できます（タスク・行動の両方のレイアウトに追加済み）。</p>
+<p>表示される項目：種別／予定時間(h)／実績(分)／実行状況／スケジュール開始時刻</p>
+<blockquote>
+<p>※ 日々の操作は本タスク管理画面で行うのが基本です。標準画面は確認・補正用にお使いください。</p>
+</blockquote>
+<hr>
+<h2>8. 項目リファレンス</h2>
+<table>
+<thead>
+<tr>
+<th>項目（画面表示）</th>
+<th>内部名</th>
+<th>種類</th>
+<th>値・説明</th>
+<th>誰がセット</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>種別</td>
+<td>TaskCategory__c</td>
+<td>選択リスト</td>
+<td>外出／社内／会議</td>
+<td>ユーザー</td>
+</tr>
+<tr>
+<td>作業種別</td>
+<td>WorkType__c</td>
+<td>選択リスト</td>
+<td>申告／相談／資料作成／打合せ／記帳／給与計算／年末調整／届出／その他</td>
+<td>ユーザー</td>
+</tr>
+<tr>
+<td>予定時間(h)</td>
+<td>Planned_Hours__c</td>
+<td>数値</td>
+<td>見込み時間（0.25単位）</td>
+<td>ユーザー</td>
+</tr>
+<tr>
+<td>実績(分)</td>
+<td>Actual_Minutes__c</td>
+<td>数値</td>
+<td>開始〜完了で自動集計</td>
+<td>自動</td>
+</tr>
+<tr>
+<td>実行状況</td>
+<td>RunStatus__c</td>
+<td>選択リスト</td>
+<td>未着手／実行中／中断中／完了</td>
+<td>自動（ボタン操作）</td>
+</tr>
+<tr>
+<td>スケジュール開始時刻</td>
+<td>Scheduled_Start__c</td>
+<td>日時</td>
+<td>割り当てた日時</td>
+<td>自動（割当操作）</td>
+</tr>
+<tr>
+<td>計測基点</td>
+<td>Running_Since__c</td>
+<td>日時</td>
+<td>実行中の計測開始時刻（内部用）</td>
+<td>自動</td>
+</tr>
+<tr>
+<td>優先度</td>
+<td>Priority</td>
+<td>選択リスト</td>
+<td>高(High)／中(Normal)／低(Low)</td>
+<td>ユーザー</td>
+</tr>
+<tr>
+<td>顧問先</td>
+<td>（関連先）</td>
+<td>関連</td>
+<td>取引先</td>
+<td>ユーザー</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>9. 色・バッジ・アイコン一覧</h2>
+<p><strong>種別バッジ</strong></p>
+<ul>
+<li>🟣 外出（紫） ／ 🔵 社内（青） ／ 🟠 会議（橙）</li>
+</ul>
+<p><strong>優先度バッジ／カード左の縦線</strong></p>
+<ul>
+<li>🔴 高（赤） ／ 🟠 中（橙） ／ 🟢 低（緑）</li>
+</ul>
+<p><strong>実行状況バッジ</strong></p>
+<ul>
+<li>⚪ 未着手（灰） ／ 🟢 実行中（緑・カードが緑枠で強調） ／ 🟡 中断中（黄・カードが薄黄） ／ ⚫ 完了（灰・取り消し線）</li>
+</ul>
+<p><strong>その他バッジ</strong></p>
+<ul>
+<li>🟡「前日から中断」… 繰越タスクの目印</li>
+<li>🏢 … 顧問先（取引先）名</li>
+</ul>
+<hr>
+<h2>10. 権限と表示範囲</h2>
+<ul>
+<li>表示されるのは「<strong>自分が担当（所有）するタスク</strong>」だけです。他の人のタスクは表示されません。</li>
+<li>本機能は権限セット「<strong>加納タスク管理</strong>」で利用できます（現在、全アクティブユーザーに割当済み）。</li>
+<li>データの追加・更新は画面の操作を通じて行われ、<strong>自分のタスクに対してのみ</strong>反映されます。</li>
+</ul>
+<hr>
+<h2>11. よくある質問（FAQ）</h2>
+<p><strong>Q. 入力した内容は保存されますか？</strong>
+A. はい。割当・予定時間・実績・状況は<strong>その場で保存</strong>され、ブラウザを閉じても残ります。</p>
+<p><strong>Q. 他の担当者のタスクは見えますか？</strong>
+A. 見えません。各自、自分のタスクのみ表示されます。</p>
+<p><strong>Q. スケジュールは何時から何時まで？</strong>
+A. <strong>8:00〜19:00</strong>、<strong>15分単位</strong>で割り当てできます。</p>
+<p><strong>Q. 予定時間と実績の違いは？</strong>
+A. 予定時間は「見込み（手入力）」、実績は「実際にかかった時間（開始/完了から自動計算）」です。</p>
+<p><strong>Q. 中断したまま帰っても大丈夫？</strong>
+A. 大丈夫です。翌日のリストに「前日から中断」で表示され、続きができます。</p>
+<p><strong>Q. 週間・月間で予定を見たいです。</strong>
+A. 現在は日次画面です。週間・月間ビューは<strong>次の開発フェーズ</strong>で対応予定です。</p>
+<p><strong>Q. スマホでドラッグできません。</strong>
+A. スマホは「時刻」欄から割り当ててください。ドラッグはPC推奨です。</p>
+<hr>
+<h2>12. トラブルシューティング</h2>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>確認・対処</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>画面が出ない／アプリが見つからない</td>
+<td>検証用（サンドボックス）環境にログインしているか確認。権限割当の確認が必要な場合は担当へ連絡</td>
+</tr>
+<tr>
+<td>タスクが表示されない</td>
+<td>日付（‹ ›）と、自分が担当のタスクかを確認。完了済みは未割当リストに出ません</td>
+</tr>
+<tr>
+<td>ドラッグできない</td>
+<td>スマホの場合は「時刻」欄から割当。PCでも反応しない場合は画面を再読み込み</td>
+</tr>
+<tr>
+<td>ボタンが押せない（短いタスク）</td>
+<td>カードにマウスを乗せる（スマホはタップ）と広がって押せます</td>
+</tr>
+<tr>
+<td>実績が増えない</td>
+<td>「開始」を押してから時間が経過する必要があります。中断/完了で加算されます</td>
+</tr>
+<tr>
+<td>エラーが出る</td>
+<td>スクリーンショットをチャットワークへ送付してください</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>13. 制約・既知の仕様</h2>
+<ul>
+<li>スケジュールの時間帯は <strong>8:00〜19:00</strong>、割当は <strong>15分（0.25h）単位</strong>。</li>
+<li><strong>ドラッグ＆ドロップはPC推奨</strong>（タッチ端末ではドラッグ非対応のため「時刻」欄を使用）。</li>
+<li><strong>週間・月間ビューは未実装</strong>（次フェーズ）。現状は日次のみ。</li>
+<li>表示対象は<strong>自分の所有タスクのみ</strong>。</li>
+<li>現在は<strong>検証用（サンドボックス）環境</strong>での提供です。</li>
+</ul>
+<hr>
+<h2>14. 問い合わせ</h2>
+<p>本機能は要望に応じて改善していきます。お気づきの点・ご要望は<strong>チャットワーク</strong>でお知らせください。エラー時は<strong>スクリーンショット</strong>を添えていただけると対応がスムーズです。</p>
+<hr>
+<p><em>（本マニュアルは現行の検証環境の仕様に基づいて作成しています。仕様変更時は更新します。）</em></p>
+
+</main>
+</body>
+</html>
