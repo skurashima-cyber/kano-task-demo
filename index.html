@@ -207,7 +207,7 @@
     <datalist id="acctList"></datalist>
     <div class="row">
       <div><label>種別</label><select id="mType"><option>社内</option><option>外出</option><option>会議</option></select></div>
-      <div><label>作業種別</label><input id="mWork" placeholder="例：記帳代行"></div>
+      <div><label>作業種別</label><select id="mWork"></select></div>
     </div>
     <div class="row">
       <div><label>優先度</label><select id="mPri"><option value="1">高</option><option value="2" selected>中</option><option value="3">低</option></select></div>
@@ -258,6 +258,8 @@ function init(){
     const o=document.createElement('option');o.value=a;o.textContent=a;fa.appendChild(o);
     const o2=document.createElement('option');o2.value=a;dl.appendChild(o2);
   });
+  const mw=document.getElementById('mWork');
+  WORK_TYPES.forEach(w=>{const o=document.createElement('option');o.value=w;o.textContent=w;mw.appendChild(o);});
   renderDate(); render();
   setInterval(tick,1000);   // 実行中タスクの実績を毎秒更新
 }
@@ -431,7 +433,7 @@ function dup(id){const s=tasks.find(x=>x.id===id);if(!s)return;
 // ===== 新規タスク =====
 function openNew(){document.getElementById('modalBg').classList.add('show');document.getElementById('mTitle').focus();}
 function closeNew(){document.getElementById('modalBg').classList.remove('show');
-  ['mTitle','mAcct','mWork'].forEach(i=>document.getElementById(i).value='');document.getElementById('mEst').value='1.0';}
+  ['mTitle','mAcct'].forEach(i=>document.getElementById(i).value='');document.getElementById('mEst').value='1.0';}
 function addTask(){
   const title=val('mTitle').trim();if(!title){alert('件名を入力してください');return;}
   const t=mk(title,val('mAcct').trim()||'（未設定）',val('mWork').trim()||'その他',val('mType'),+val('mPri'),Math.max(0,snap(+val('mEst')||0.25)),null,null);
